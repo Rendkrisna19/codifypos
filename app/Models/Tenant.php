@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tenant extends Model
 {
     use HasFactory;
 
-    // WAJIB ADA AGAR BISA DI-CREATE SAAT OTP BERHASIL
     protected $fillable = [
         'name',
         'slug',
@@ -17,7 +17,6 @@ class Tenant extends Model
         'is_active',
     ];
 
-    // Opsional: Untuk memastikan trial_until dibaca sebagai format waktu
     protected function casts(): array
     {
         return [
@@ -25,4 +24,20 @@ class Tenant extends Model
             'is_active' => 'boolean',
         ];
     }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+   public function helpdeskMessages()
+    {
+        return $this->hasMany(HelpdeskMessage::class);
+    }
+    
 }

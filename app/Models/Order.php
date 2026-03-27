@@ -9,7 +9,7 @@ class Order extends Model
     protected $fillable = [
         'tenant_id', 'user_id', 'order_number', 'order_type', 
         'subtotal', 'tax_amount', 'grand_total', 
-        'amount_tendered', 'change_amount', 'payment_method'
+        'amount_tendered', 'change_amount', 'payment_method', 'payment_status', 'customer_name'
     ];
 
     public function items() {

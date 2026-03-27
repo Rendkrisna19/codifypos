@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -20,10 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'tenant_id', // WAJIB ADA
-        'role',      // WAJIB ADA
-        'otp_code',  // WAJIB ADA AGAR BISA DISIMPAN
-        'otp_expires_at', // WAJIB ADA
+        'tenant_id', 
+        'role',     
+        'otp_code', 
+        'otp_expires_at', 
+        'profile_photo',
+        'phone',
     ];
 
     /**
@@ -53,4 +56,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Tenant::class);
     }
+
+    
 }
