@@ -13,36 +13,28 @@ class VerifyOtp extends Component
 {
     public $otp = '';
 
-    // Fungsi ini sekarang hanya akan dipanggil oleh Alpine.js setiap 60 detik
     public function autoResend()
     {
         $user = Auth::user();
-        
-        // Pastikan user ada sebelum memproses
         if($user) {
             $newOtp = rand(100000, 999999);
-            
             $user->update([
                 'otp_code' => $newOtp,
                 'otp_expires_at' => now()->addMinutes(5),
             ]);
-
             Mail::to($user->email)->send(new SendOtpMail($newOtp));
-            
-            $this->otp = ''; // Kosongkan inputan otomatis
+            $this->otp = ''; 
         }
     }
 
     public function verify()
     {
-        // Pastikan inputan bersih dari spasi tidak sengaja
         $this->otp = trim($this->otp);
         $this->validate(['otp' => 'required|numeric|digits:6']);
         
         $user = Auth::user();
 
-        // Validasi utama
-        if ($user->otp_code == $this->otp && $user->otp_expires_at >= now()) {
+        if ($user && $user->otp_code == $this->otp && $user->otp_expires_at >= now()) {
             $cafeName = session('pending_cafe_name', $user->name . ' Cafe');
             
             $tenant = Tenant::create([
@@ -68,7 +60,7 @@ class VerifyOtp extends Component
 
     public function render()
     {
-        // Pastikan layout targetnya benar sesuai file layout utama kamu
-        return view('livewire.auth.verify-otp')->layout('components.layouts.app');
+        // Kuncinya di sini: Gunakan layout 'guest' agar sidebar TIDAK muncul
+        return view('livewire.auth.verify-otp')->layout('layouts.guest');
     }
 }
